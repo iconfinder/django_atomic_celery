@@ -1,15 +1,13 @@
 import base64
 import json
-import pickle
 from redis import StrictRedis
 from django.db import transaction
 from django.conf import settings
-from django.test import TestCase
-from django_atomic_celery.testing import DjangoAtomicCeleryTestCaseMixin
+from django.test import TransactionTestCase
 from .tasks import task
 
 
-class TaskTestCase(DjangoAtomicCeleryTestCaseMixin, TestCase):
+class TaskTestCase(TransactionTestCase):
     """Test case for tasks.
     """
 
@@ -44,20 +42,20 @@ class TaskTestCase(DjangoAtomicCeleryTestCaseMixin, TestCase):
             raw_message = self.redis.lpop('celery')
             message = json.loads(raw_message)
             raw_body = base64.b64decode(message[u'body'])
-            body = pickle.loads(raw_body)
+            body = json.loads(raw_body)
 
             expected_name, expected_args, expected_kwargs = t
-            self.assertEqual(body['task'], expected_name)
+            self.assertEqual(message['headers']['task'], expected_name)
             if expected_args is not None:
-                self.assertEqual(tuple(body['args']), tuple(expected_args))
+                self.assertEqual(tuple(body[0]), tuple(expected_args))
             else:
                 # args was not provided, compare with expected default
-                self.assertEqual(tuple(body['args']), ())
+                self.assertEqual(tuple(body[0]), ())
             if expected_kwargs is not None:
-                self.assertEqual(body['kwargs'], expected_kwargs)
+                self.assertEqual(body[1], expected_kwargs)
             else:
                 # kwargs was not provided, compare with expected default
-                self.assertEqual(body['kwargs'], {})
+                self.assertEqual(body[1], {})
 
     def _test_behavior(self, call, args=None, kwargs=None):
         # Task delayed outside transaction block is scheduled immediately.

@@ -10,8 +10,7 @@ packages = [
 ]
 
 requires = [
-    'Django>=1.6.0,<1.8.0',
-    'django-atomic-signals>=1.0.0,<2.0',
+    'Django>=1.11.0,<1.12.0',
 ]
 
 tests_require = [
