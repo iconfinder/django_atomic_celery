@@ -1,0 +1,5 @@
+celery[redis]==4.0.0
+psycopg2
+flake8
+-e git+https://github.com/django-nose/django-nose.git@master#egg=django-nose
+rednose
