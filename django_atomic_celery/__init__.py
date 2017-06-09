@@ -27,3 +27,4 @@ class PostTransactionTask(Task):
 
 
 task = partial(base_task, base=PostTransactionTask)
+

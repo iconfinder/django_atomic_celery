@@ -13,11 +13,15 @@ requires = [
     'Django>=1.11.0,<1.12.0',
 ]
 
+
 tests_require = [
     'flake8',
     'django-nose',
     'rednose',
 ]
+
+with open('README.rst') as readme_file:
+    readme = readme_file.read()
 
 setup(
     name='django-atomic-celery',
@@ -25,7 +29,9 @@ setup(
     description='Atomic transaction aware Celery tasks for Django 1.11+',
     author='Nick Bruun',
     author_email='nick@bruun.co',
-    url='http://bruun.co/',
+    maintainer='Adam Johnson',
+    maintainer_email='me@adamj.eu',
+    url='https://github.com/adamchainz/django_atomic_celery',
     packages=packages,
     package_data={'': ['LICENSE']},
     package_dir={'django_atomic_celery': 'django_atomic_celery'},
@@ -35,7 +41,7 @@ setup(
     license=open('LICENSE').read(),
     zip_safe=True,
     classifiers=(
-        'Development Status :: 5 - Production/Stable',
+        'Development Status :: 7 - Inactive',
         'Framework :: Django',
         'Intended Audience :: Developers',
         'Natural Language :: English',
